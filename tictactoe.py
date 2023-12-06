@@ -8,21 +8,27 @@ X = "X"
 O = "O"
 EMPTY = None
 
+board = [[EMPTY, EMPTY, EMPTY],
+        [EMPTY, EMPTY, EMPTY],
+        [EMPTY, EMPTY, EMPTY]]
+
+def lines(board):
+    l1, l2, l3 = board[0], board[1], board[2]
+    return l1, l2, l3
 
 def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY]]
+    line1, line2, line3 = lines(board)
+    return board
 
 
 def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    print("test")
+    
     raise NotImplementedError
 
 
@@ -51,6 +57,7 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
+    
     raise NotImplementedError
 
 
