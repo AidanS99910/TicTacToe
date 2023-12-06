@@ -8,19 +8,14 @@ X = "X"
 O = "O"
 EMPTY = None
 
-board = [[EMPTY, EMPTY, EMPTY],
-        [EMPTY, EMPTY, EMPTY],
-        [EMPTY, EMPTY, EMPTY]]
-
-def lines(board):
-    l1, l2, l3 = board[0], board[1], board[2]
-    return l1, l2, l3
 
 def initial_state():
     """
     Returns starting state of the board.
     """
-    line1, line2, line3 = lines(board)
+    board = [[EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY]]
     return board
 
 
@@ -28,9 +23,18 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    
+    xcount = 0
+    ycount = 0
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == X:
+                xcount += 1
+            elif board[i][j] == O:
+                xcount += 1
+    if xcount == 0 and ycount == 0:
+        
     raise NotImplementedError
-
+    
 
 def actions(board):
     """
