@@ -24,16 +24,19 @@ def player(board):
     Returns player who has the next turn on a board.
     """
     xcount = 0
-    ycount = 0
+    ocount = 0
+    # rows
     for i in range(3):
+        # columns
         for j in range(3):
             if board[i][j] == X:
                 xcount += 1
             elif board[i][j] == O:
-                xcount += 1
-    if xcount == 0 and ycount == 0:
-        
-    raise NotImplementedError
+                ocount += 1
+    if xcount == ocount:
+        return X
+    if xcount > ocount:
+        return O
     
 
 def actions(board):
