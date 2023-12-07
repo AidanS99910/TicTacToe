@@ -52,6 +52,48 @@ def result(board, action):
     """
     raise NotImplementedError
 
+def utility(board):
+    """
+    Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
+    """
+    xoro = X
+    winvalue = 1
+    for n in range(2):
+        if board == [[xoro, EMPTY, EMPTY],
+                    [EMPTY, xoro, EMPTY],
+                    [EMPTY, EMPTY, xoro]]:
+            return winvalue
+        if board == [[xoro, xoro, xoro],
+                    [EMPTY, EMPTY, EMPTY],
+                    [EMPTY, EMPTY, EMPTY]]:
+            return winvalue
+        if board == [[xoro, EMPTY, EMPTY],
+                    [xoro, EMPTY, EMPTY],
+                    [xoro, EMPTY, EMPTY]]:
+            return winvalue
+        if board == [[EMPTY, xoro, EMPTY],
+                    [EMPTY, xoro, EMPTY],
+                    [EMPTY, xoro, EMPTY]]:
+            return winvalue
+        if board == [[EMPTY, EMPTY, xoro],
+                    [EMPTY, xoro, EMPTY],
+                    [xoro, EMPTY, EMPTY]]:
+            return winvalue
+        if board == [[EMPTY, EMPTY, xoro],
+                    [EMPTY, EMPTY, xoro],
+                    [EMPTY, EMPTY, xoro]]:
+            return winvalue
+        if board == [[EMPTY, EMPTY, EMPTY],
+                    [xoro, xoro, xoro],
+                    [EMPTY, EMPTY, EMPTY]]:
+            return winvalue
+        if board == [[EMPTY, EMPTY, EMPTY],
+                    [EMPTY, EMPTY, EMPTY],
+                    [xoro, xoro, xoro]]:
+            return winvalue
+        xoro = O
+        winvalue = -1
+        
 
 def winner(board):
     """
@@ -59,21 +101,14 @@ def winner(board):
     """
     raise NotImplementedError
 
-
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
     
+            
+    
     raise NotImplementedError
-
-
-def utility(board):
-    """
-    Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
-    """
-    raise NotImplementedError
-
 
 def minimax(board):
     """
