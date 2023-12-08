@@ -9,6 +9,10 @@ O = "O"
 EMPTY = None
 winvalue = 2
 
+class inputerror(Exception):
+    # raises exception if occupied square clicked
+    print("Invalid cell.")
+    pass
 
 def initial_state():
     """
@@ -58,9 +62,14 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
+    # specification says don't change OG board
     turn = player(board)
-    board[action[0]][action[1]] = turn
-    return board
+    newboard = board
+    if newboard[action[0]][action[1]] == EMPTY:
+        newboard[action[0]][action[1]] = turn
+    else:
+        raise inputerror
+    return newboard
 
 def utility(board):
     """
