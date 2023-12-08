@@ -122,8 +122,9 @@ def terminal(board):
     """
     if winvalue != 2:
         return True
-    # come back after making other functions
-    raise NotImplementedError
+    if actions(board) == []:
+        return True
+    return False
 
 def minimax(board):
     """
