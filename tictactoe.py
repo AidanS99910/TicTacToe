@@ -7,6 +7,7 @@ import math
 X = "X"
 O = "O"
 EMPTY = None
+winvalue = 2
 
 
 def initial_state():
@@ -43,14 +44,23 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    raise NotImplementedError
+    moves = []
+    # row itterator
+    for i in range(3):
+        # column itterator
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                moves.append(f"({i}, {j})")
+    return moves
 
 
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    turn = player(board)
+    board[action[0]][action[1]] = turn
+    return board
 
 def utility(board):
     """
@@ -93,21 +103,26 @@ def utility(board):
             return winvalue
         xoro = O
         winvalue = -1
+    return 0
         
 
 def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    if winvalue == 1:
+        return X
+    if winvalue == -1:
+        return O
+    return None
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    
-            
-    
+    if winvalue != 2:
+        return True
+    # come back after making other functions
     raise NotImplementedError
 
 def minimax(board):
