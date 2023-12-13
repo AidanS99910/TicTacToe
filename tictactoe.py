@@ -8,6 +8,8 @@ X = "X"
 O = "O"
 EMPTY = None
 winvalue = 2
+maxormin = True
+v = 0
 
 class inputerror(Exception):
     # raises exception if occupied square clicked
@@ -54,9 +56,8 @@ def actions(board):
         # column itterator
         for j in range(3):
             if board[i][j] == EMPTY:
-                moves.append(f"({i}, {j})")
+                moves.append([i, j])
     return moves
-
 
 def result(board, action):
     """
@@ -64,7 +65,7 @@ def result(board, action):
     """
     # specification says don't change OG board
     turn = player(board)
-    newboard = board
+    newboard = [row[:] for row in board]
     if newboard[action[0]][action[1]] == EMPTY:
         newboard[action[0]][action[1]] = turn
     else:
@@ -135,6 +136,26 @@ def terminal(board):
         return True
     return False
 
+def maxi(board):
+    if terminal(board) == True:
+        print(f"{utility(board)}")
+        return utility(board)
+    v = -2
+    # for each action possible
+    for i in range(len(actions(board))):
+        v = max(v, mini(result(board, actions(board)[i])))
+    return v
+    
+def mini(board):
+    if terminal(board) == True:
+        print(f"{utility(board)}")
+        return utility(board)
+    v = 2
+    # for each action possible
+    for j in range(len(actions(board))):
+        v = min(v, maxi(result(board, actions(board)[j])))
+    return v
+
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
@@ -142,4 +163,7 @@ def minimax(board):
     if terminal(board) == True:
         return None
     
-    raise NotImplementedError
+    if player(board) == X:
+        maxi(board)
+    if player(board) == O:
+        mini(board)
