@@ -76,43 +76,14 @@ def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    xoro = X
-    winvalue = 1
-    for n in range(2):
-        if board == [[xoro, EMPTY, EMPTY],
-                    [EMPTY, xoro, EMPTY],
-                    [EMPTY, EMPTY, xoro]]:
-            return winvalue
-        if board == [[xoro, xoro, xoro],
-                    [EMPTY, EMPTY, EMPTY],
-                    [EMPTY, EMPTY, EMPTY]]:
-            return winvalue
-        if board == [[xoro, EMPTY, EMPTY],
-                    [xoro, EMPTY, EMPTY],
-                    [xoro, EMPTY, EMPTY]]:
-            return winvalue
-        if board == [[EMPTY, xoro, EMPTY],
-                    [EMPTY, xoro, EMPTY],
-                    [EMPTY, xoro, EMPTY]]:
-            return winvalue
-        if board == [[EMPTY, EMPTY, xoro],
-                    [EMPTY, xoro, EMPTY],
-                    [xoro, EMPTY, EMPTY]]:
-            return winvalue
-        if board == [[EMPTY, EMPTY, xoro],
-                    [EMPTY, EMPTY, xoro],
-                    [EMPTY, EMPTY, xoro]]:
-            return winvalue
-        if board == [[EMPTY, EMPTY, EMPTY],
-                    [xoro, xoro, xoro],
-                    [EMPTY, EMPTY, EMPTY]]:
-            return winvalue
-        if board == [[EMPTY, EMPTY, EMPTY],
-                    [EMPTY, EMPTY, EMPTY],
-                    [xoro, xoro, xoro]]:
-            return winvalue
-        xoro = O
-        winvalue = -1
+    for player in [X, O]:
+        # Check rows and columns
+        for i in range(3):
+            if all(cell == player for cell in board[i]) or all(board[j][i] == player for j in range(3)):
+                return 1 if player == X else -1
+        # Check diagonals
+        if all(board[i][i] == player for i in range(3)) or all(board[i][2 - i] == player for i in range(3)):
+            return 1 if player == X else -1
     return 0
         
 
@@ -120,21 +91,34 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    if winvalue == 1:
-        return X
-    if winvalue == -1:
-        return O
+    if utility(board) != 0:
+        if utility(board) == 1:
+            return X
+        else:
+            return O
     return None
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    if winvalue != 2:
+    taken = 0
+    # TODO: Fix utility
+    if utility(board) != 0:
         return True
-    if actions(board) == []:
+    for i in range(3):
+        try:
+        # if there's an available spot in this row
+            if board[i].index(EMPTY) > -1:
+                break
+        # if there isnt
+        except ValueError:
+            taken += 1
+            continue
+    if taken == 3:
         return True
-    return False
+    else:
+        return False
 
 def maxi(board):
     if terminal(board) == True:
@@ -166,14 +150,16 @@ def minimax(board):
         bestvalue = maxi(board)
         for i in range(len(actions(board))):
             # RESULT TAKES 2 THINGS
-            if bestvalue == maxi(result(actions(board)[i])):
+            if bestvalue == mini(result(board, actions(board)[i])):
                 bestaction = actions(board)[i]
+                break
             
     if player(board) == O:
         bestvalue = mini(board)
         for j in range(len(actions(board))):
             # RESULT TAKES 2 THINGS
-            if bestvalue == mini(result(actions(board)[j])):
-                bestaction = actions(board)[i]
+            if bestvalue == maxi(result(board, actions(board)[j])):
+                bestaction = actions(board)[j]
+                break
 
     return bestaction
