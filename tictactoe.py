@@ -103,7 +103,6 @@ def terminal(board):
     Returns True if game is over, False otherwise.
     """
     taken = 0
-    # TODO: Fix utility
     if utility(board) != 0:
         return True
     for i in range(3):
@@ -143,19 +142,29 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     bestaction = (0, 0)
-    bestvalue = 0
+    if player(board) == X:
+        bestvalue = float('inf')     
+    else:
+        bestvalue = float('-inf')
+    turn = player(board)
     if terminal(board) == True:
         return None
-    if player(board) == X:
+    # X wants to maximize win value
+    if turn == X:
         bestvalue = maxi(board)
+        # for each action possible on this board
         for i in range(len(actions(board))):
+            # if the best max value equals the best min value for this action
             if bestvalue == mini(result(board, actions(board)[i])):
                 bestaction = actions(board)[i]
                 break
-            
-    if player(board) == O:
+    # O wants to minimize win value
+    else:
         bestvalue = mini(board)
+        print(f"{bestvalue}")
+        # for each action possible on this board
         for j in range(len(actions(board))):
+            # if the best original min value equals the best max value for this action
             if bestvalue == maxi(result(board, actions(board)[j])):
                 bestaction = actions(board)[j]
                 break
