@@ -161,7 +161,6 @@ def minimax(board):
     # O wants to minimize win value
     else:
         bestvalue = mini(board)
-        print(f"{bestvalue}")
         # for each action possible on this board
         for j in range(len(actions(board))):
             # if the best original min value equals the best max value for this action
