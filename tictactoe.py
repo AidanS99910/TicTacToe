@@ -149,7 +149,6 @@ def minimax(board):
     if player(board) == X:
         bestvalue = maxi(board)
         for i in range(len(actions(board))):
-            # RESULT TAKES 2 THINGS
             if bestvalue == mini(result(board, actions(board)[i])):
                 bestaction = actions(board)[i]
                 break
@@ -157,7 +156,6 @@ def minimax(board):
     if player(board) == O:
         bestvalue = mini(board)
         for j in range(len(actions(board))):
-            # RESULT TAKES 2 THINGS
             if bestvalue == maxi(result(board, actions(board)[j])):
                 bestaction = actions(board)[j]
                 break
