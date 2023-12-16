@@ -138,7 +138,6 @@ def terminal(board):
 
 def maxi(board):
     if terminal(board) == True:
-        print(f"{utility(board)}")
         return utility(board)
     v = -2
     # for each action possible
@@ -148,7 +147,6 @@ def maxi(board):
     
 def mini(board):
     if terminal(board) == True:
-        print(f"{utility(board)}")
         return utility(board)
     v = 2
     # for each action possible
@@ -160,10 +158,22 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    bestaction = (0, 0)
+    bestvalue = 0
     if terminal(board) == True:
         return None
-    
     if player(board) == X:
-        maxi(board)
+        bestvalue = maxi(board)
+        for i in range(len(actions(board))):
+            # RESULT TAKES 2 THINGS
+            if bestvalue == maxi(result(actions(board)[i])):
+                bestaction = actions(board)[i]
+            
     if player(board) == O:
-        mini(board)
+        bestvalue = mini(board)
+        for j in range(len(actions(board))):
+            # RESULT TAKES 2 THINGS
+            if bestvalue == mini(result(actions(board)[j])):
+                bestaction = actions(board)[i]
+
+    return bestaction
