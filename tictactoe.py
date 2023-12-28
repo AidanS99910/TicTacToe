@@ -164,6 +164,10 @@ def minimax(board):
         return None
     # X wants to maximize win value
     if turn == X:
+        if board == [[EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY]]:
+            return (1, 1)
         bestvalue = maxi(board)
         turns = 1
         # for each action possible on this board
