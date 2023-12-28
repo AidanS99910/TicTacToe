@@ -10,10 +10,16 @@ EMPTY = None
 winvalue = 2
 maxormin = True
 v = 0
-
+ft = False
+turns = 1
 class inputerror(Exception):
     # raises exception if occupied square clicked
-    print("Invalid cell.")
+    global ft
+    if ft == False:
+        pass
+    else:
+        print("Invalid cell.")
+    ft = True
     pass
 
 def initial_state():
@@ -120,28 +126,35 @@ def terminal(board):
         return False
 
 def maxi(board):
+    global turns
     if terminal(board) == True:
         return utility(board)
     v = -2
     # for each action possible
     for i in range(len(actions(board))):
         v = max(v, mini(result(board, actions(board)[i])))
+    turns += 1
     return v
     
 def mini(board):
+    global turns
     if terminal(board) == True:
         return utility(board)
     v = 2
     # for each action possible
     for j in range(len(actions(board))):
         v = min(v, maxi(result(board, actions(board)[j])))
+    turns += 1
     return v
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    global turns
+    optactions = []
     bestaction = (0, 0)
+    bestturns = float("inf")
     if player(board) == X:
         bestvalue = float('inf')     
     else:
@@ -152,20 +165,39 @@ def minimax(board):
     # X wants to maximize win value
     if turn == X:
         bestvalue = maxi(board)
+        turns = 1
         # for each action possible on this board
         for i in range(len(actions(board))):
+            action = mini(result(board, actions(board)[i]))
             # if the best max value equals the best min value for this action
-            if bestvalue == mini(result(board, actions(board)[i])):
-                bestaction = actions(board)[i]
-                break
+            if bestvalue == action:
+                # make an array of all (equally optimal) best moves
+                optactions.append(actions(board)[i])
+        # for best move, find the shortest one
+        for y in range(len(optactions)):
+            turns = 1
+            mini(result(board, optactions[y]))
+            if turns < bestturns:
+                bestturns = turns
+                bestaction = optactions[y]
+
     # O wants to minimize win value
     else:
         bestvalue = mini(board)
+        turns = 1
         # for each action possible on this board
         for j in range(len(actions(board))):
+            action = maxi(result(board, actions(board)[j]))
             # if the best original min value equals the best max value for this action
-            if bestvalue == maxi(result(board, actions(board)[j])):
-                bestaction = actions(board)[j]
-                break
+            if bestvalue == action:
+                # make an array of all (equally optimal) best moves
+                optactions.append(actions(board)[j])
+        # for best move, find the shortest one
+        for z in range(len(optactions)):
+            turns = 1
+            maxi(result(board, optactions[z]))
+            if turns < bestturns:
+                bestturns = turns
+                bestaction = optactions[z]
 
     return bestaction
